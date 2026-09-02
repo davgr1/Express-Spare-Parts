@@ -15,6 +15,10 @@ import ventaRoutes from "./src/routers/venta.js";
 import reviewRoutes from "./src/routers/review.js";
 import suppliderRoutes from "./src/routers/supplider.js";
 import promocionRoutes from "./src/routers/promocion.js";
+import loginCustomerRoutes from "./src/routers/loginClientes.js";
+import loginAdminRoutes from "./src/routers/loginAdmin.js";
+
+
 
 // Nuevos Routers añadidos para compatibilidad / nuevas pantallas
 import customersRouter from "./src/routers/customers.js";
@@ -52,5 +56,10 @@ app.use("/api/venta", ventaRoutes);
 app.use("/api/reviews", reviewsRouter); // Plural
 app.use("/api/supplider", suppliderRoutes);
 app.use("/api/promocion", promocionRoutes);
+app.use("/api/loginCliente", loginCustomerRoutes);
+app.use("/api/loginAdmin", loginAdminRoutes);
+app.use("/api/reviewa", reviewRoutes);
+
+
 
 export default app;
