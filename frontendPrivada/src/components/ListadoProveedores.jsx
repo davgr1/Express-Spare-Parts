@@ -2,14 +2,14 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 
 function ListadoProveedores({ proveedores, onEdit, onDelete }) {
   return (
-    <table className="data-table" id="providers-table">
+    <table className="suppliers-table-custom" id="providers-table">
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Correo</th>
           <th>Telefono</th>
           <th>Imagen</th>
-          <th>Direccion</th>
+          <th>Dirrecion</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
@@ -23,19 +23,19 @@ function ListadoProveedores({ proveedores, onEdit, onDelete }) {
           </tr>
         ) : proveedores.map((prov) => (
           <tr key={prov._id}>
-            <td style={{ fontWeight: 600 }}>{prov.name}</td>
-            <td>{prov.email}</td>
-            <td>{prov.phone}</td>
+            <td style={{ fontWeight: 800 }}>{prov.name}</td>
+            <td style={{ fontWeight: 600 }}>{prov.email}</td>
+            <td style={{ fontWeight: 600 }}>{prov.phone}</td>
             <td>
               {prov.image ? (
-                <img src={prov.image} alt={prov.name} className="table-image" />
+                <img src={prov.image} alt={prov.name} className="table-image" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
               ) : (
                 <span style={{ color: '#9CA3AF' }}>Sin imagen</span>
               )}
             </td>
-            <td>{prov.direcion || '—'}</td>
+            <td style={{ fontWeight: 600 }}>{prov.direcion || '—'}</td>
             <td>
-              <span className={`status-indicator ${prov.status ? 'active' : 'inactive'}`} />
+              <div className={`status-square ${prov.status ? 'active' : 'inactive'}`}></div>
             </td>
             <td>
               <div className="actions-cell">

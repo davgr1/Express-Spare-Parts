@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Easing, Text } from 'react-native';
+import { View, StyleSheet, Animated, Easing, Image } from 'react-native';
 
 export default function SplashScreen() {
   const scaleValue = useRef(new Animated.Value(0)).current;
@@ -32,9 +32,11 @@ export default function SplashScreen() {
           }
         ]}
       >
-        <View style={styles.mockLogo}>
-          <Text style={styles.logoText}>eShop</Text>
-        </View>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
       </Animated.View>
     </View>
   );
@@ -51,23 +53,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  mockLogo: {
-    width: 150,
-    height: 150,
-    backgroundColor: '#6C63FF',
-    borderRadius: 75,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 10,
-    shadowColor: '#6C63FF',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
+  logoImage: {
+    width: 220,
+    height: 220,
   },
-  logoText: {
-    color: '#FFF',
-    fontSize: 32,
-    fontWeight: 'bold',
-    letterSpacing: 2,
-  }
 });

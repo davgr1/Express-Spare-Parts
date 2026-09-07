@@ -6,20 +6,26 @@ const productsController = {};
 
 //SELECT
 productsController.getProducts = async (req, res) => {
-  const products = await productsModel.find();
-  res.json(products);
+  try {
+    const products = await productsModel.find().populate('supplider_id', 'name email');
+    res.json(products);
+  } catch (error) {
+    console.log('error getProducts:', error);
+    res.status(500).json({ message: 'internal server error' });
+  }
 };
 
 //INSERT
 productsController.insertProducts = async (req, res) => {
-  //#1- Solicito los datos a guardar
-  const { name, description, price, stock } = req.body;
-  //#2- Lleno una instacia de mi Schema
-  const newProduct = new productsModel({ name, description, price, stock });
-  //#3- guardo en la base de datos
-  await newProduct.save();
-
-  res.json({ message: "Product saved" });
+  try {
+    const { name, description, price, stock, image, supplider_id } = req.body;
+    const newProduct = new productsModel({ name, description, price, stock, image, supplider_id });
+    await newProduct.save();
+    res.json({ message: 'Product saved' });
+  } catch (error) {
+    console.log('error insertProducts:', error);
+    res.status(500).json({ message: 'internal server error' });
+  }
 };
 
 //ELIMINAR
@@ -30,21 +36,16 @@ productsController.deleteProducts = async (req, res) => {
 
 //ACTUALIZAR
 productsController.updateProducts = async (req, res) => {
-  //#1- pido los nuevos datos
-  const { name, description, price, stock } = req.body;
-  //#2- actualizo los datos
-  await productsModel.findByIdAndUpdate(
-    req.params.id,
-    {
-      name,
-      description,
-      price,
-      stock,
-    },
-    { new: true },
-  );
-
-  res.json({ message: "product updated" });
+  try {
+    const { name, description, price, stock, image, supplider_id } = req.body;
+    const updateData = { name, description, price, stock, supplider_id };
+    if (image) updateData.image = image;
+    await productsModel.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    res.json({ message: 'product updated' });
+  } catch (error) {
+    console.log('error updateProducts:', error);
+    res.status(500).json({ message: 'internal server error' });
+  }
 };
 
 //select por id

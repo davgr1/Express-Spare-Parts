@@ -12,7 +12,6 @@ import registerAdminRoutes from "./src/routers/registerAdmin.js";
 import registeremployeerRoutes from "./src/routers/registerEmployeer.js";
 import registerCustomerRoutes from "./src/routers/registerCustomer.js";
 import ventaRoutes from "./src/routers/venta.js";
-import reviewRoutes from "./src/routers/review.js";
 import suppliderRoutes from "./src/routers/supplider.js";
 import promocionRoutes from "./src/routers/promocion.js";
 import loginCustomerRoutes from "./src/routers/loginClientes.js";
@@ -28,7 +27,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176"],
+    origin: true,
     // permitir el envío de cookies y credenciales
     credentials: true,
   }),
@@ -38,7 +37,8 @@ app.use(
 app.use(cookieParser());
 
 //Que acepte los json desde postman
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Rutas remotas y unificadas
 app.use("/api/customer", customerRoutes);
@@ -58,7 +58,6 @@ app.use("/api/supplider", suppliderRoutes);
 app.use("/api/promocion", promocionRoutes);
 app.use("/api/loginCliente", loginCustomerRoutes);
 app.use("/api/loginAdmin", loginAdminRoutes);
-app.use("/api/reviewa", reviewRoutes);
 
 
 

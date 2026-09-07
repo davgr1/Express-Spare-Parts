@@ -3,7 +3,7 @@ import axios from 'axios'
 import { FiSearch } from 'react-icons/fi'
 import Boton from '../components/Boton'
 import ListadoProveedores from '../components/ListadoProveedores'
-import FromEmpleados from '../components/FromEmpleados'
+import FormProveedores from '../components/FormProveedores'
 
 const API = 'http://localhost:4000/api'
 
@@ -44,16 +44,12 @@ function Proveedores() {
     }
   }, [search, proveedores])
 
-  const handleSave = async (formData) => {
+  const handleSave = async (data) => {
     try {
       if (editProv) {
-        await axios.put(`${API}/supplider/${editProv._id}`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        await axios.put(`${API}/supplider/${editProv._id}`, data)
       } else {
-        await axios.post(`${API}/supplider`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        await axios.post(`${API}/supplider`, data)
       }
       setShowForm(false)
       setEditProv(null)
@@ -96,7 +92,7 @@ function Proveedores() {
         <div className="search-container">
           <input
             type="text"
-            placeholder="Buscar usuario"
+            placeholder="Buscar proveedor"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             id="search-providers"
@@ -112,7 +108,7 @@ function Proveedores() {
       />
 
       {showForm && (
-        <FromEmpleados
+        <FormProveedores
           proveedor={editProv}
           onSave={handleSave}
           onClose={() => { setShowForm(false); setEditProv(null) }}

@@ -30,10 +30,12 @@ customerController.getCustomerById = async (req, res) => {
 // POST Crear cliente
 customerController.createCustomer = async (req, res) => {
   try {
-    const { full_name, email, phone_number, user, password, status } = req.body;
+    const { full_name, name, email, phone_number, phone, user, password, image, status } = req.body;
+    const customerFullName = (full_name || name || "").trim();
+    const customerPhone = phone_number || phone || "";
 
-    // Validacione
-    if (!full_name || !email || !password) {
+    // Validaciones
+    if (!customerFullName || !email || !password) {
       return res.status(400).json({ message: "Fields full_name, email and password are required" });
     }
 
@@ -44,16 +46,19 @@ customerController.createCustomer = async (req, res) => {
     }
 
     const newCustomer = new customerModel({
-      full_name: full_name.trim(),
+      full_name: customerFullName,
+      name: customerFullName,
       email: email.trim(),
-      phone_number,
-      user,
+      phone_number: customerPhone,
+      phone: customerPhone,
+      user: user || customerFullName,
       password,
+      image: image || null,
       status: status !== undefined ? status : true,
     });
 
     await newCustomer.save();
-    return res.status(201).json({ message: "Customer created successfully" });
+    return res.status(201).json({ message: "Customer created successfully", customer: newCustomer });
   } catch (error) {
     console.log("error " + error);
     return res.status(500).json({ message: "Internal server error" });
@@ -63,23 +68,45 @@ customerController.createCustomer = async (req, res) => {
 // PUT - Actualizar cliente
 customerController.updateCustomer = async (req, res) => {
   try {
-    const { full_name, email, phone_number, user, status } = req.body;
+    const { full_name, name, email, phone_number, phone, user, image, status } = req.body;
 
-    if (!full_name || !email) {
-      return res.status(400).json({ message: "Fields full_name and email are required" });
+    const updateData = {};
+    if (full_name !== undefined) {
+      updateData.full_name = full_name;
+      updateData.name = full_name;
+    } else if (name !== undefined) {
+      updateData.name = name;
+      updateData.full_name = name;
     }
+
+    if (email !== undefined) updateData.email = email.trim();
+    
+    if (phone_number !== undefined) {
+      updateData.phone_number = phone_number;
+      updateData.phone = phone_number;
+    } else if (phone !== undefined) {
+      updateData.phone = phone;
+      updateData.phone_number = phone;
+    }
+
+    if (user !== undefined) updateData.user = user;
+    if (image !== undefined) updateData.image = image;
+    if (status !== undefined) updateData.status = status;
 
     const customerUpdated = await customerModel.findByIdAndUpdate(
       req.params.id,
-      { full_name, email, phone_number, user, status },
+      updateData,
       { new: true }
-    );
+    ).select("-password");
 
     if (!customerUpdated) {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    return res.status(200).json({ message: "Customer updated successfully" });
+    return res.status(200).json({
+      message: "Customer updated successfully",
+      customer: customerUpdated,
+    });
   } catch (error) {
     console.log("error " + error);
     return res.status(500).json({ message: "Internal server error" });

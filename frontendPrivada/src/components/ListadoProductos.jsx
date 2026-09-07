@@ -32,7 +32,7 @@ function ListadoProductos({ products, onEdit, onDelete }) {
           <th>Descripción Técnica</th>
           <th>Precio</th>
           <th>Nivel de Stock</th>
-          <th>ID Proveedor</th>
+          <th>Proveedor</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -50,15 +50,23 @@ function ListadoProductos({ products, onEdit, onDelete }) {
               <td>
                 <div className="product-cell">
                   {product.image ? (
-                    <img src={product.image} alt={product.name} className="product-thumb" />
-                  ) : (
-                    <div className="product-thumb" style={{ 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '18px', color: '#9CA3AF'
-                    }}>
-                      📦
-                    </div>
-                  )}
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="product-thumb"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                        e.target.nextSibling.style.display = 'flex'
+                      }}
+                    />
+                  ) : null}
+                  <div className="product-thumb" style={{
+                    display: product.image ? 'none' : 'flex',
+                    alignItems: 'center', justifyContent: 'center',
+                    fontSize: '18px', color: '#9CA3AF'
+                  }}>
+                    📦
+                  </div>
                   <div className="product-info">
                     <h4>{product.name}</h4>
                     <span className="sku">SKU: {product._id?.slice(-6).toUpperCase()}</span>
@@ -79,7 +87,13 @@ function ListadoProductos({ products, onEdit, onDelete }) {
                   </div>
                 </div>
               </td>
-              <td>{product.supplider_id ? product.supplider_id.toString().slice(-6).toUpperCase() : '—'}</td>
+              <td>
+                {product.supplider_id
+                  ? (typeof product.supplider_id === 'object'
+                      ? product.supplider_id.name || '—'
+                      : product.supplider_id.toString().slice(-6).toUpperCase())
+                  : '—'}
+              </td>
               <td>
                 <div className="actions-cell">
                   <button

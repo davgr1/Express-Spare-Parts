@@ -23,7 +23,7 @@ const promocionController = {
                 titulo,
                 descripcion,
                 imagen: imagenUrl,
-                status: status === 'true' || status === true
+                status: status !== undefined ? (status === 'true' || status === true) : true
             });
 
             const savedPromocion = await nuevaPromocion.save();

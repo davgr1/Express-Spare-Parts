@@ -23,7 +23,7 @@ const productsSchema = new Schema({
     },
     supplider_id: {
        type: Schema.Types.ObjectId,
-       ref: "supplider",
+       ref: "Suppliers",
     }
 }, {
     timestamps: true,
