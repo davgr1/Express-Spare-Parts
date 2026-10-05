@@ -1,19 +1,60 @@
 import React, { useContext } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { CartContext } from '../context/CartContext';
 
 export default function CartScreen() {
   const { cartItems, removeFromCart, updateQuantity, clearCart, getCartTotal } = useContext(CartContext);
+  const navigation = useNavigation();
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
       Alert.alert('Carrito Vacío', 'Agrega repuestos antes de procesar el pedido.');
       return;
     }
+    
+    Alert.alert(
+      'Método de Pago',
+      '¿Cómo deseas pagar tu pedido?',
+      [
+        { 
+          text: 'Pagar con Wompi', 
+          onPress: () => processPayment('Wompi') 
+        },
+        { 
+          text: 'Pago contra entrega', 
+          onPress: () => processPayment('Efectivo') 
+        },
+        { 
+          text: 'Cancelar', 
+          style: 'cancel' 
+        }
+      ]
+    );
+  };
+
+  const processPayment = (method) => {
+    if (method === 'Wompi') {
+      const amount = getCartTotal();
+      const reference = `ORDER-${Date.now()}`;
+      
+      navigation.navigate('WompiPayment', {
+        amount: amount,
+        reference: reference,
+        onPaymentSuccess: () => {
+          clearCart();
+        }
+      });
+    } else {
+      confirmOrder(method);
+    }
+  };
+
+  const confirmOrder = (method) => {
     Alert.alert(
       'Pedido Confirmado',
-      'Tu pedido ha sido enviado al administrador. Nos pondremos en contacto pronto.',
+      `Tu pedido ha sido enviado al administrador.\nMétodo: ${method}.\nNos pondremos en contacto pronto.`,
       [{ text: 'OK', onPress: () => clearCart() }]
     );
   };

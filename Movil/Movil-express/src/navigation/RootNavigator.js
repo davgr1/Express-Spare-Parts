@@ -9,6 +9,7 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/auth/ResetPasswordScreen';
 import MainTabs from './MainTabs';
 import MoreNavigator from './MoreNavigator';
+import WompiPaymentScreen from '../screens/WompiPaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function RootNavigator() {
         <>
           <Stack.Screen name="Main" component={MainTabs} />
           <Stack.Screen name="MoreScreens" component={MoreNavigator} />
+          <Stack.Screen name="WompiPayment" component={WompiPaymentScreen} options={{ presentation: 'modal' }} />
         </>
       ) : (
         <>
