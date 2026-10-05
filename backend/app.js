@@ -16,6 +16,7 @@ import suppliderRoutes from "./src/routers/supplider.js";
 import promocionRoutes from "./src/routers/promocion.js";
 import loginCustomerRoutes from "./src/routers/loginClientes.js";
 import loginAdminRoutes from "./src/routers/loginAdmin.js";
+import wompiRoutes from "./src/routers/wompi.js";
 
 
 
@@ -58,6 +59,7 @@ app.use("/api/supplider", suppliderRoutes);
 app.use("/api/promocion", promocionRoutes);
 app.use("/api/loginCliente", loginCustomerRoutes);
 app.use("/api/loginAdmin", loginAdminRoutes);
+app.use("/api/wompi", wompiRoutes);
 
 
 
