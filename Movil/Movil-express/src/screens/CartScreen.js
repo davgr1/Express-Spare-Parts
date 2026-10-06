@@ -19,8 +19,12 @@ export default function CartScreen() {
       '¿Cómo deseas pagar tu pedido?',
       [
         { 
-          text: 'Pagar con Wompi', 
+          text: 'Tarjeta de Crédito/Débito (Wompi)', 
           onPress: () => processPayment('Wompi') 
+        },
+        { 
+          text: 'Transferencia Bancaria', 
+          onPress: () => processPayment('Transferencia') 
         },
         { 
           text: 'Pago contra entrega', 
@@ -46,6 +50,15 @@ export default function CartScreen() {
           clearCart();
         }
       });
+    } else if (method === 'Transferencia') {
+      Alert.alert(
+        'Transferencia Bancaria',
+        'Por favor, transfiere el total a la cuenta:\nBanco Agrícola: 1234567890\nA nombre de: Express Spare Parts.\n\nTu pedido será enviado al administrador para su verificación.',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Confirmar Pedido', onPress: () => confirmOrder(method) }
+        ]
+      );
     } else {
       confirmOrder(method);
     }

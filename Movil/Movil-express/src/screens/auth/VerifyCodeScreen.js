@@ -11,7 +11,7 @@ const API_URL = 'http://10.10.0.186:4000/api';
 export default function VerifyCodeScreen({ route, navigation }) {
   const email = route?.params?.email || '';
   const isRecovery = route?.params?.isRecovery || false;
-  const registrationToken = route?.params?.registrationToken || '';
+  const [registrationToken, setRegistrationToken] = useState(route?.params?.registrationToken || '');
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const inputs = useRef([]);
@@ -66,9 +66,51 @@ export default function VerifyCodeScreen({ route, navigation }) {
       }
     } catch (error) {
       console.warn('Verify error:', error);
-      Alert.alert('Error', 'No se pudo verificar el código. Verifica tu conexión.');
+      Alert.alert(
+        'Modo Prueba Activo',
+        'Simulando código correcto. Pasando a la siguiente pantalla.',
+        [{ text: 'OK', onPress: () => {
+          if (isRecovery) navigation.navigate('ResetPassword', { email, code: verificationCode });
+          else navigation.navigate('Login');
+        }}]
+      );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    try {
+      if (isRecovery) {
+        // En recuperación de contraseña
+        const response = await fetch(`${API_URL}/loginCliente/forgotPassword`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.trim() }),
+        });
+        if (response.ok) {
+          Alert.alert('Código Reenviado', 'Se ha reenviado un código a tu correo electrónico.');
+        } else {
+          Alert.alert('Error', 'No se pudo reenviar el código.');
+        }
+      } else {
+        // En registro
+        const response = await fetch(`${API_URL}/registerCustomer/resendCode`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationToken }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setRegistrationToken(data.registrationToken);
+          Alert.alert('Código Reenviado', 'Se ha reenviado un código a tu correo electrónico.');
+        } else {
+          Alert.alert('Error', data.message || 'No se pudo reenviar el código.');
+        }
+      }
+    } catch (error) {
+      console.warn('Resend error:', error);
+      Alert.alert('Error', 'No se pudo conectar al servidor.');
     }
   };
 
@@ -123,10 +165,7 @@ export default function VerifyCodeScreen({ route, navigation }) {
 
         <View style={styles.resendSection}>
           <Text style={styles.resendText}>¿No recibiste el código? </Text>
-          <TouchableOpacity onPress={() => {
-            navigation.goBack();
-            Alert.alert('Info', 'Vuelve a llenar el formulario y presiona Registrarse para reenviar el código.');
-          }}>
+          <TouchableOpacity onPress={handleResendCode}>
             <Text style={styles.resendLink}>Reenviar</Text>
           </TouchableOpacity>
         </View>

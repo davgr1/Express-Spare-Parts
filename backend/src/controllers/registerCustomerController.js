@@ -174,4 +174,56 @@ registerCustomerController.verifyCode = async (req, res) => {
   }
 };
 
+registerCustomerController.resendCode = async (req, res) => {
+  const { registrationToken } = req.body;
+  if (!registrationToken) return res.status(400).json({ message: "Token requerido" });
+
+  try {
+    let decoded;
+    try {
+      decoded = jsonwebtoken.verify(registrationToken, config.JWT.secret, { ignoreExpiration: true });
+    } catch (e) {
+      return res.status(400).json({ message: "Token inválido" });
+    }
+
+    const { email, randomNumber: oldCode, iat, exp, ...userData } = decoded;
+
+    const existsCustomer = await customerModel.findOne({ email });
+    if (existsCustomer) {
+      return res.status(400).json({ message: "El correo ya está registrado" });
+    }
+
+    const randomNumber = crypto.randomBytes(3).toString("hex");
+
+    const token = jsonwebtoken.sign(
+      { randomNumber, email, ...userData },
+      config.JWT.secret,
+      { expiresIn: "15m" }
+    );
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: config.email.user_email,
+        pass: config.email.user_password,
+      },
+    });
+
+    const mailOptions = {
+      from: config.email.user_email,
+      to: email,
+      subject: "Nuevo código de verificación - Express Spare Parts",
+      text: "Para verificar tu cuenta, utiliza este nuevo código: " + randomNumber + " expira en 15 minutos",
+    };
+
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({ message: "Código reenviado", registrationToken: token });
+  } catch (error) {
+    console.log("error " + error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export default registerCustomerController
