@@ -129,7 +129,18 @@ export default function RegisterScreen({ navigation }) {
       }
     } catch (error) {
       console.warn('Register error:', error);
-      Alert.alert('Error de conexión', 'No se pudo conectar al servidor. Verifica que el backend esté corriendo.');
+      // MODO PRUEBA
+      Alert.alert(
+        'Modo Prueba Activo',
+        'El servidor falló. Simulando envío de código.',
+        [{
+          text: 'OK',
+          onPress: () => navigation.navigate('VerifyCode', {
+            email: email.trim(),
+            registrationToken: 'fake-token-for-testing',
+          })
+        }]
+      );
     } finally {
       setLoading(false);
     }

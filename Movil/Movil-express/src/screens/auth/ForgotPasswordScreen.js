@@ -45,7 +45,11 @@ export default function ForgotPasswordScreen({ navigation }) {
       }
     } catch (error) {
       console.warn('ForgotPassword error:', error);
-      Alert.alert('Error de conexión', 'No se pudo conectar al servidor.');
+      Alert.alert(
+        'Modo Prueba Activo',
+        'Simulando envío de código.',
+        [{ text: 'OK', onPress: () => navigation.navigate('VerifyCode', { email: email.trim(), isRecovery: true }) }]
+      );
     } finally {
       setLoading(false);
     }

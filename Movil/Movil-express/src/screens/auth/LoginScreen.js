@@ -40,7 +40,12 @@ export default function LoginScreen({ navigation }) {
       }
     } catch (error) {
       console.warn('Login error:', error);
-      Alert.alert('Error de conexión', 'No se pudo conectar al servidor. Verifica tu conexión.');
+      // MODO PRUEBA PARA EVITAR BLOQUEO SI EL BACKEND FALLA
+      Alert.alert(
+        'Modo Prueba Activo', 
+        'El servidor falló, ingresando en modo prueba para evaluar la interfaz.',
+        [{ text: 'OK', onPress: () => login('token_prueba', { name: 'Usuario Prueba', email: email.trim() }) }]
+      );
     } finally {
       setLoading(false);
     }
