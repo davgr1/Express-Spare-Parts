@@ -8,6 +8,7 @@ import ShopScreen from '../screens/ShopScreen';
 import CartScreen from '../screens/CartScreen';
 import PromoScreen from '../screens/PromoScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import HomeScreen from '../screens/HomeScreen';
 import { AuthContext } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
@@ -43,8 +44,9 @@ export default function MainTabs() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-
-            if (route.name === 'Productos') {
+            if (route.name === 'Inicio') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'Productos') {
               iconName = focused ? 'cube' : 'cube-outline';
             } else if (route.name === 'Promociones') {
               iconName = focused ? 'pricetag' : 'pricetag-outline';
@@ -72,6 +74,7 @@ export default function MainTabs() {
           ),
         })}
       >
+        <Tab.Screen name="Inicio" component={HomeScreen} />
         <Tab.Screen name="Productos" component={ShopScreen} />
         <Tab.Screen name="Promociones" component={PromoScreen} />
         <Tab.Screen name="Carrito" component={CartScreen} />
@@ -108,6 +111,11 @@ export default function MainTabs() {
             <TouchableOpacity style={styles.menuItem} onPress={() => handleMoreMenuOption('Contact')}>
               <Ionicons name="call-outline" size={20} color="#1f2937" style={styles.menuIcon} />
               <Text style={styles.menuText}>Contactos</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.menuItem} onPress={() => handleMoreMenuOption('OrderHistory')}>
+              <Ionicons name="receipt-outline" size={20} color="#1f2937" style={styles.menuIcon} />
+              <Text style={styles.menuText}>Historial de Pedidos</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.menuItem} onPress={() => handleMoreMenuOption('AboutUs')}>
