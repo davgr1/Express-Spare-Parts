@@ -7,7 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../../context/AuthContext';
 
-const API_URL = 'http://10.10.0.186:4000/api';
+const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
 
 export default function LoginScreen({ navigation }) {
   const { login } = useContext(AuthContext);

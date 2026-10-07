@@ -20,10 +20,16 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.crizzz.Movilexpress"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "284e0a21-9934-42f7-a318-ffb88884b7fb"
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const API_URL = 'http://10.10.0.186:4000/api';
+const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
 
 const MOCK_REVIEWS = [
   {

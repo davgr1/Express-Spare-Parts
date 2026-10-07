@@ -1,7 +1,23 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ProductCard({ title, price, imageUrl, onPress, isPromo = false }) {
+export default function ProductCard({ title, price, imageUrl, onPress, isPromo = false, rating = 5 }) {
+  const renderStars = () => {
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <Ionicons 
+          key={i} 
+          name={i <= rating ? 'star' : 'star-outline'} 
+          size={12} 
+          color="#f59e0b" 
+        />
+      );
+    }
+    return stars;
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image 
@@ -11,6 +27,13 @@ export default function ProductCard({ title, price, imageUrl, onPress, isPromo =
       />
       <View style={styles.infoContainer}>
         <Text style={styles.title} numberOfLines={2}>{title}</Text>
+        
+        {/* Estrellas de valoración */}
+        <View style={styles.ratingRow}>
+          {renderStars()}
+          <Text style={styles.ratingText}>({rating.toFixed(1)})</Text>
+        </View>
+
         <Text style={styles.price}>${price}</Text>
         {isPromo && (
           <View style={styles.promoBadge}>
@@ -48,7 +71,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 4,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  ratingText: {
+    fontSize: 11,
+    color: '#64748b',
+    marginLeft: 4,
   },
   price: {
     fontSize: 16,

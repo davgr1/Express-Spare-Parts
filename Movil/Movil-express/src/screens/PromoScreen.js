@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import ProductCard from '../components/ProductCard';
 
-const API_URL = 'http://10.10.0.186:4000/api/promocion';
+const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api/promocion';
 
 const MOCK_PROMOS = [
   { _id: 'p1', titulo: '2x1 en Aceites', descripcion: 'Lleva dos litros de aceite sintético por el precio de uno.', status: true, imagen: 'https://via.placeholder.com/300x150?text=Promo+Aceite' },

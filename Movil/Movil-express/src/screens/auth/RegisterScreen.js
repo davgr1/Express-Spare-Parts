@@ -7,7 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const API_URL = 'http://10.10.0.186:4000/api';
+const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');

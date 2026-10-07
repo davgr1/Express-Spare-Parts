@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
 
-const API_URL = 'http://10.10.0.186:4000/api';
+const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const { userData } = useContext(AuthContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,6 +58,9 @@ export default function HomeScreen() {
     );
   }
 
+  // Obtener el primer nombre del usuario
+  const firstName = userData?.full_name ? userData.full_name.split(' ')[0] : (userData?.name || 'Cliente');
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Banner Principal */}
@@ -65,8 +70,8 @@ export default function HomeScreen() {
           style={styles.bannerImage}
           resizeMode="contain"
         />
-        <Text style={styles.bannerTitle}>Express Spare Parts</Text>
-        <Text style={styles.bannerSubtitle}>Encuentra los mejores repuestos para tu vehículo</Text>
+        <Text style={styles.bannerTitle}>Hola, {firstName} 👋</Text>
+        <Text style={styles.bannerSubtitle}>Encuentra los mejores repuestos en Express Spare Parts</Text>
       </View>
 
       {/* Categorías Rápidas */}
