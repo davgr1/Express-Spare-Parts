@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
+const API_URL = 'https://express-spare-parts.onrender.com/api';
 
 export default function OrderHistoryScreen() {
   const { userData } = useContext(AuthContext);

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
+const API_URL = 'https://express-spare-parts.onrender.com/api';
 
 export default function VerifyCodeScreen({ route, navigation }) {
   const email = route?.params?.email || '';

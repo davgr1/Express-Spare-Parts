@@ -5,7 +5,7 @@ import { CartContext } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 import CustomButton from '../components/CustomButton';
 
-const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api/product';
+const API_URL = 'https://express-spare-parts.onrender.com/api/product';
 
 const MOCK_PRODUCTS = [
   { _id: '1', name: 'Amortiguador Delantero', description: 'Amortiguador de gas premium', price: 45.99, stock: 25, image: 'https://via.placeholder.com/150' },

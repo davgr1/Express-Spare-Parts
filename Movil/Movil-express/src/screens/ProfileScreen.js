@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from '../context/AuthContext';
 
-const API_URL = 'https://virtually-path-console-abstracts.trycloudflare.com/api';
+const API_URL = 'https://express-spare-parts.onrender.com/api';
 
 export default function ProfileScreen() {
   const { userData, logout, updateUser } = useContext(AuthContext);
